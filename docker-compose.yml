@@ -1,0 +1,18 @@
+version: "3.4"
+
+services:
+  ae:
+    image: docker.repo.silenteight.com/ae/adjudication-engine-app:snapshot
+    restart: unless-stopped
+    ports:
+    - "24802:8081"
+  postgres:
+    image: postgres:12
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "adjudication-engine"
+      POSTGRES_USER: "adjudication-engine"
+      POSTGRES_PASSWORD: "adjudication-engine"
+      PGDATA: "/var/lib/postgresql/data/pgdata"

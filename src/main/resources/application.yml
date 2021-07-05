@@ -1,0 +1,70 @@
+#---------------------------------------------------------------------------------------------------
+# MESSAGING CONCURRENCY
+#---------------------------------------------------------------------------------------------------
+ae:
+  messaging:
+    concurrency: 4
+    prefetch: 25
+
+  # FIXME(ahaczewski): Rename to `comments.template-engine.cache-invalidation`.
+  comments:
+    template:
+      cache:
+        invalidation: "0 */15 * * * ?"
+
+  categories:
+    missing:
+      batch-size:
+        insert: 1024
+        select: 4096
+
+  comment-input:
+    jdbc:
+      missing-batch-size-select: 8192
+
+  recommendation:
+    jdbc:
+      pending-alerts:
+        fetch-size: 8192
+    comment:
+      template-name: alert
+
+  grpc:
+    client:
+      category-service:
+        timeout: 10s
+      comment-input:
+        timeout: 10s
+      policy-steps:
+        timeout: 5s
+      alert-solving:
+        timeout: 5s
+
+  #-------------------------------------------------------------------------------------------------
+  # RABBITMQ
+  #-------------------------------------------------------------------------------------------------
+  rabbitmq:
+    listener:
+      type: simple
+      direct:
+        consumers-per-queue: ${ae.messaging.concurrency:4}
+        prefetch: ${ae.messaging.prefetch:25}
+        retry:
+          enabled: true
+          multiplier: 2
+      simple:
+        concurrency: 1
+        max-concurrency: ${ae.messaging.concurrency:4}
+        prefetch: ${ae.messaging.prefetch:25}
+        retry:
+          enabled: true
+          multiplier: 2
+
+  jackson:
+    default-property-inclusion: NON_NULL
+
+  webflux:
+    base-path: /rest/${spring.application.name}
+
+info:
+  env: ${ae.env:local}
