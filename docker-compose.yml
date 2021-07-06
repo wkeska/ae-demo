@@ -4,8 +4,6 @@ services:
   ae:
     image: docker.repo.silenteight.com/ae/adjudication-engine-app:snapshot
     restart: unless-stopped
-    environment:
-      SPRING_PROFILES_ACTIVE: "rabbitdeclare,mockagents,mockgovernance,mockdatasource"
     ports:
     - "24802:8081"
   postgres:

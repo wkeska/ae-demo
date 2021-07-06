@@ -29,17 +29,6 @@ ae:
     comment:
       template-name: alert
 
-  grpc:
-    client:
-      category-service:
-        timeout: 10s
-      comment-input:
-        timeout: 10s
-      policy-steps:
-        timeout: 5s
-      alert-solving:
-        timeout: 5s
-
   #-------------------------------------------------------------------------------------------------
   # RABBITMQ
   #-------------------------------------------------------------------------------------------------
@@ -68,3 +57,7 @@ ae:
 
 info:
   env: ${ae.env:local}
+grpc:
+  server:
+    port: 24803
+
