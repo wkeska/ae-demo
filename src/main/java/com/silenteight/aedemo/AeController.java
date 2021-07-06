@@ -32,7 +32,7 @@ public class AeController {
   }
 
   @GetMapping("recommendation")
-  String getRecrcommendation() {
+  String getRecommendation() {
     return aeService.getRecommendation();
   }
 }

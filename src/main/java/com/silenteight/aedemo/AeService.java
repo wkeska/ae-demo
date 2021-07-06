@@ -94,11 +94,15 @@ public class AeService {
   }
 
   String getRecommendation() {
-    return recommendationStub
+    var reco = recommendationStub
         .streamRecommendations(StreamRecommendationsRequest
             .newBuilder()
             .setRecommendationSource(analysis)
-            .buildPartial())
-        .toString();
+            .buildPartial());
+    StringBuilder response = new StringBuilder();
+    while (reco.hasNext()) {
+      response.append(reco.next().toString());
+    }
+    return response.toString();
   }
 }

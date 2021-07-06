@@ -3,12 +3,6 @@
 Demo application to show adjudication-engine flow.
  
 ## Running project
- 
-Install `Common docker infrastructure`:
-
-    git clone git@gitlab.silenteight.com:sens/common-docker-infrastructure.git
-    cd common-docker-infrastructure
-    make up
 
 Start Adjudication Engine:
 

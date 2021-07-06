@@ -4,6 +4,8 @@ services:
   ae:
     image: docker.repo.silenteight.com/ae/adjudication-engine-app:snapshot
     restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: "rabbitdeclare,mockagents,mockgovernance,mockdatasource"
     ports:
     - "24802:8081"
   postgres:
@@ -16,3 +18,9 @@ services:
       POSTGRES_USER: "adjudication-engine"
       POSTGRES_PASSWORD: "adjudication-engine"
       PGDATA: "/var/lib/postgresql/data/pgdata"
+  rabbitmq:
+    build: .
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
