@@ -4,11 +4,9 @@ Demo application to show adjudication-engine flow.
  
 ## Running project
 
-Start Adjudication Engine:
-
-    docker-compose up -d
-
-Run this project
+1. Clone Adjudication Engine project https://gitlab.silenteight.com/sens/adjudication-engine
+2. Follow AE readme to run it
+3. Run this project
  
 ## Brief explanation
  
