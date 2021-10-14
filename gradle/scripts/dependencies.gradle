@@ -5,20 +5,25 @@ ext {
   // Silent Eight
   //***********************************
   serpProtocolVersion = "0.27.0"
-  silenteightAdjudicationApiVersion = "0.2.0"
   silenteightAuditBsVersion = "1.2.0"
-  silenteightCommonsVersion = "2.0.0"
   silenteightModelApiVersion = "1.4.0"
   silenteightSepAuthVersion = "1.4.0"
-  silenteightSepBaseVersion = "1.10.0"
   silenteightSepUsermanagementApiVersion = "1.4.0"
   silenteightSepUsermanagementKeycloakVersion = "1.3.0"
+
+  adjudicationEngineApiVersion = "0.6.0"
+  governanceApiVersion = "1.7.0"
+  agentsApiVersion = "0.4.0"
+  silenteightDataSourceApiVersion = "0.8.0"
+  silenteightCommonsVersion = "2.1.0"
+  silenteightSepBaseVersion = "1.12.2"
 }
 
 // @formatter:off
 
 // Silent Eight
-libraries.silenteight_adjudication_api = [group: 'com.silenteight.adjudication.api', name: 'adjudication-api', version: silenteightAdjudicationApiVersion]
+
+libraries.silenteight_adjudication_api = [group: 'com.silenteight.adjudication.api', name: 'adjudication-api', version: adjudicationEngineApiVersion]
 libraries.silenteight_audit_bs = [group: 'com.silenteight.auditing.bs', name: 'silenteight-audit-bs', version: silenteightAuditBsVersion]
 libraries.silenteight_commons_core = [group: 'com.silenteight.commons', name: 'silenteight-commons-core', version: silenteightCommonsVersion]
 libraries.silenteight_model_api = [group: 'com.silenteight.governance.api', name: 'se-model-api', version: silenteightModelApiVersion]
