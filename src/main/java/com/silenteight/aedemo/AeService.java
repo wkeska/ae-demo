@@ -1,6 +1,7 @@
 package com.silenteight.aedemo;
 
 import com.silenteight.adjudication.api.v1.*;
+import com.silenteight.adjudication.api.v1.Analysis.Feature;
 import com.silenteight.adjudication.api.v2.GetRecommendationRequest;
 import com.silenteight.adjudication.api.v2.RecommendationServiceGrpc;
 import com.silenteight.adjudication.api.v2.StreamRecommendationsRequest;
@@ -85,7 +86,20 @@ public class AeService {
   public String createAnalysis() {
     var response = analysisStub.createAnalysis(CreateAnalysisRequest
         .newBuilder()
-        .setAnalysis(Analysis.newBuilder().setName("analysis/1").build())
+        .setAnalysis(Analysis
+            .newBuilder()
+            .addAllFeatures(List.of(
+                Feature.newBuilder()
+                    .setFeature("features/geolocation")
+                    .setAgentConfig("agents/geo/versions/1.0.0/configs/1")
+                    .build(),
+                Feature.newBuilder()
+                    .setFeature("features/dateOfBirth")
+                    .setAgentConfig("agents/date/versions/1.0.0/configs/1")
+                    .build()))
+            .addAllCategories(List.of("categories/source_system", "categories/customer_type"))
+            .setName("analysis/1")
+        )
         .build());
     analysis = response.getName();
     var addDataSetResponse = analysisStub.addDataset(
