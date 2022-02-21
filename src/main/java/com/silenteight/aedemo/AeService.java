@@ -1,8 +1,7 @@
 package com.silenteight.aedemo;
 
 import com.silenteight.adjudication.api.v1.*;
-import com.silenteight.adjudication.api.v1.Analysis.Feature;
-import com.silenteight.adjudication.api.v2.GetRecommendationRequest;
+import com.silenteight.adjudication.api.v1.Analysis.NotificationFlags;
 import com.silenteight.adjudication.api.v2.RecommendationServiceGrpc;
 import com.silenteight.adjudication.api.v2.StreamRecommendationsRequest;
 
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class AeService {
@@ -42,9 +41,18 @@ public class AeService {
 
     var response = alertStub.batchCreateAlerts(BatchCreateAlertsRequest
         .newBuilder()
-        .addAlerts(Alert.newBuilder().setAlertId("1").setName("alert").build())
-        .addAlerts(Alert.newBuilder().setAlertId("2").setName("alert2").build())
+        .addAlerts(Alert
+            .newBuilder()
+            .setAlertId(String.valueOf(randInt(10, 1000)))
+            .setName("alert")
+            .build())
+        .addAlerts(Alert
+            .newBuilder()
+            .setAlertId(String.valueOf(randInt(10, 1000)))
+            .setName("alert2")
+            .build())
         .build());
+    alerts = new ArrayList<>();
     alerts.add(response.getAlerts(0));
     alerts.add(response.getAlerts(1));
     return response.toString();
@@ -53,8 +61,8 @@ public class AeService {
   public String createMatches() {
 
     var matches = List.of(
-        Match.newBuilder().setMatchId("1").setName("Match").build(),
-        Match.newBuilder().setMatchId("2").setName("Match2").build());
+        Match.newBuilder().setMatchId(String.valueOf(randInt(10, 1000))).setName("Match").build(),
+        Match.newBuilder().setMatchId(String.valueOf(randInt(10, 1000))).setName("Match2").build());
 
     var response =
         alertStub.batchCreateMatches(BatchCreateMatchesRequest.newBuilder().addAllAlertMatches(
@@ -86,25 +94,23 @@ public class AeService {
   public String createAnalysis() {
     var response = analysisStub.createAnalysis(CreateAnalysisRequest
         .newBuilder()
-        .setAnalysis(Analysis
-            .newBuilder()
-            .addAllFeatures(List.of(
-                Feature.newBuilder()
-                    .setFeature("features/geolocation")
-                    .setAgentConfig("agents/geo/versions/1.0.0/configs/1")
-                    .build(),
-                Feature.newBuilder()
-                    .setFeature("features/dateOfBirth")
-                    .setAgentConfig("agents/date/versions/1.0.0/configs/1")
-                    .build()))
-            .addAllCategories(List.of("categories/source_system", "categories/customer_type"))
-            .setName("analysis/1")
-        )
+        .setAnalysis(Analysis.newBuilder().setName("analysis/444").setNotificationFlags(
+            NotificationFlags
+                .newBuilder()
+                .setAttachMetadata(true)
+                .setAttachRecommendation(true)
+                .build()).build())
         .build());
     analysis = response.getName();
     var addDataSetResponse = analysisStub.addDataset(
         AddDatasetRequest.newBuilder().setAnalysis(analysis).setDataset(dataset).build());
     return addDataSetResponse.toString();
+  }
+
+  public String addDataSet() {
+    var response = analysisStub.addDataset(
+        AddDatasetRequest.newBuilder().setDataset(dataset).setAnalysis(analysis).build());
+    return response.toString();
   }
 
   String getRecommendation() {
@@ -118,5 +124,12 @@ public class AeService {
       response.append(reco.next().toString());
     }
     return response.toString();
+  }
+
+  public static int randInt(int min, int max) {
+    Random rand = new Random();
+    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+    return randomNum;
   }
 }

@@ -1,0 +1,12 @@
+
+### Create alert
+GET http://localhost:8080/alerts
+
+### Add matches to alert
+GET http://localhost:8080/matches
+
+### Add matches to alert
+GET http://localhost:8080/dataset
+
+### Create analsysis
+GET http://localhost:8080/analysis

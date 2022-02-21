@@ -31,6 +31,9 @@ public class AeController {
     return aeService.createAnalysis();
   }
 
+  @GetMapping("addAnalysis")
+  String addDataset() {return aeService.addDataSet();}
+
   @GetMapping("recommendation")
   String getRecommendation() {
     return aeService.getRecommendation();
