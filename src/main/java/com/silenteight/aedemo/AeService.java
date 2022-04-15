@@ -1,9 +1,12 @@
 package com.silenteight.aedemo;
 
+import lombok.extern.slf4j.Slf4j;
+
 import com.silenteight.adjudication.api.v1.*;
+import com.silenteight.adjudication.api.v1.Analysis.Feature;
 import com.silenteight.adjudication.api.v1.Analysis.NotificationFlags;
 import com.silenteight.adjudication.api.v2.RecommendationServiceGrpc;
-import com.silenteight.adjudication.api.v2.StreamRecommendationsRequest;
+import com.silenteight.adjudication.api.v2.StreamRecommendationsWithMetadataRequest;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -14,6 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+@Slf4j
 public class AeService {
 
   private ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 24801)
@@ -94,12 +98,19 @@ public class AeService {
   public String createAnalysis() {
     var response = analysisStub.createAnalysis(CreateAnalysisRequest
         .newBuilder()
-        .setAnalysis(Analysis.newBuilder().setName("analysis/444").setNotificationFlags(
-            NotificationFlags
+        .setAnalysis(Analysis.newBuilder()
+            .setName("analysis/444")
+            .addAllFeatures(List.of(Feature
                 .newBuilder()
-                .setAttachMetadata(true)
-                .setAttachRecommendation(true)
-                .build()).build())
+                .setFeature("features/name")
+                .setAgentConfig("agents/name/versions/1.0.0/configs/1")
+                .build()))
+            .setNotificationFlags(
+                NotificationFlags
+                    .newBuilder()
+                    .setAttachMetadata(true)
+                    .setAttachRecommendation(true)
+                    .build()).build())
         .build());
     analysis = response.getName();
     var addDataSetResponse = analysisStub.addDataset(
@@ -115,13 +126,15 @@ public class AeService {
 
   String getRecommendation() {
     var reco = recommendationStub
-        .streamRecommendations(StreamRecommendationsRequest
+        .streamRecommendationsWithMetadata(StreamRecommendationsWithMetadataRequest
             .newBuilder()
             .setRecommendationSource(analysis)
             .buildPartial());
     StringBuilder response = new StringBuilder();
     while (reco.hasNext()) {
-      response.append(reco.next().toString());
+      var recommendation = reco.next().toString();
+      log.info(recommendation);
+      response.append(recommendation);
     }
     return response.toString();
   }

@@ -25,7 +25,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.amqp:spring-rabbit-test'
   testImplementation 'org.springframework.integration:spring-integration-test'
-  implementation group: 'com.silenteight.adjudication.api', name: 'adjudication-api', version: '0.8.0'
+  implementation group: 'com.silenteight.adjudication.api', name: 'adjudication-api', version: '0.10.0'
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
   implementation group: 'org.springframework.amqp', name: 'spring-rabbit'
   implementation group: 'org.springframework.amqp', name: 'spring-rabbit-test'

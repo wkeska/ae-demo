@@ -10,3 +10,6 @@ GET http://localhost:8080/dataset
 
 ### Create analsysis
 GET http://localhost:8080/analysis
+
+### Get recommendation
+GET http://localhost:8080/recommendation
