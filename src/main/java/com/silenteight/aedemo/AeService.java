@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Slf4j
@@ -43,30 +45,48 @@ public class AeService {
 
   public String createAlerts() {
 
+    var alerts = IntStream.range(0, 25000).mapToObj(i -> Alert
+        .newBuilder()
+        .setAlertId("alertinio" + i)
+        .setName("alert")
+        .addMatches(Match
+            .newBuilder()
+            .setMatchId("bla" + i)
+            .setName("Match")
+            .build())
+        .build()).collect(Collectors.toList());
+
     var response = alertStub.batchCreateAlerts(BatchCreateAlertsRequest
         .newBuilder()
-        .addAlerts(Alert
-            .newBuilder()
-            .setAlertId(String.valueOf(randInt(10, 1000)))
-            .setName("alert")
-            .build())
-        .addAlerts(Alert
-            .newBuilder()
-            .setAlertId(String.valueOf(randInt(10, 1000)))
-            .setName("alert2")
-            .build())
+        .addAllAlerts(alerts)
         .build());
-    alerts = new ArrayList<>();
-    alerts.add(response.getAlerts(0));
-    alerts.add(response.getAlerts(1));
+    this.alerts = new ArrayList<>();
+    this.alerts.add(response.getAlerts(0));
+    this.alerts.add(response.getAlerts(1));
     return response.toString();
   }
 
   public String createMatches() {
 
-    var matches = List.of(
-        Match.newBuilder().setMatchId(String.valueOf(randInt(10, 1000))).setName("Match").build(),
-        Match.newBuilder().setMatchId(String.valueOf(randInt(10, 1000))).setName("Match2").build());
+    var matches = IntStream.range(0, 25000).mapToObj(i -> Match
+        .newBuilder()
+        .setMatchId("bla" + String.valueOf(i))
+        .setName("Match")
+        .build()).collect(Collectors.toList());
+
+    for (int i = 0; i < 25000; i++) {
+      alertStub.batchCreateMatches(BatchCreateMatchesRequest.newBuilder().addAllAlertMatches(
+          List.of(
+              BatchCreateAlertMatchesRequest
+                  .newBuilder()
+                  .setAlert(alerts.get(0).getName())
+                  .addMatches(Match
+                      .newBuilder()
+                      .setMatchId("bla" + String.valueOf(i))
+                      .setName("Match")
+                      .build())
+                  .build())).build());
+    }
 
     var response =
         alertStub.batchCreateMatches(BatchCreateMatchesRequest.newBuilder().addAllAlertMatches(
@@ -74,11 +94,6 @@ public class AeService {
                 BatchCreateAlertMatchesRequest
                     .newBuilder()
                     .setAlert(alerts.get(0).getName())
-                    .addAllMatches(matches)
-                    .build(),
-                BatchCreateAlertMatchesRequest
-                    .newBuilder()
-                    .setAlert(alerts.get(1).getName())
                     .addAllMatches(matches)
                     .build())).build());
 
