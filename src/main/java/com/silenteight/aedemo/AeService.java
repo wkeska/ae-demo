@@ -45,7 +45,7 @@ public class AeService {
 
   public String createAlerts() {
 
-    var alerts = IntStream.range(0, 25000).mapToObj(i -> Alert
+    var alerts = IntStream.range(0, 2).mapToObj(i -> Alert
         .newBuilder()
         .setAlertId("alertinio" + i)
         .setName("alert")
@@ -68,13 +68,13 @@ public class AeService {
 
   public String createMatches() {
 
-    var matches = IntStream.range(0, 25000).mapToObj(i -> Match
+    var matches = IntStream.range(0, 2).mapToObj(i -> Match
         .newBuilder()
         .setMatchId("bla" + String.valueOf(i))
         .setName("Match")
         .build()).collect(Collectors.toList());
 
-    for (int i = 0; i < 25000; i++) {
+    for (int i = 0; i < 2; i++) {
       alertStub.batchCreateMatches(BatchCreateMatchesRequest.newBuilder().addAllAlertMatches(
           List.of(
               BatchCreateAlertMatchesRequest
