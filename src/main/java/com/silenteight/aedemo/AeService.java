@@ -115,6 +115,7 @@ public class AeService {
         .newBuilder()
         .setAnalysis(Analysis.newBuilder()
             .setName("analysis/444")
+            .addAllCategories(List.of("categories/test1", "categories/test2"))
             .addAllFeatures(List.of(Feature
                 .newBuilder()
                 .setFeature("features/name")

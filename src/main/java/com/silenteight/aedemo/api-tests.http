@@ -1,15 +1,15 @@
 
 ### Create alert
-GET http://localhost:8080/alerts
+GET http://localhost:8081/alerts
 
 ### Add matches to alert
-GET http://localhost:8080/matches
+GET http://localhost:8081/matches
 
 ### Add matches to alert
-GET http://localhost:8080/dataset
+GET http://localhost:8081/dataset
 
 ### Create analsysis
-GET http://localhost:8080/analysis
+GET http://localhost:8081/analysis
 
 ### Get recommendation
-GET http://localhost:8080/recommendation
+GET http://localhost:8081/recommendation
